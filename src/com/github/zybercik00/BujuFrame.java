@@ -30,8 +30,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 
-import com.github.zybercik00.ListDemo.FireListener;
-
 public class BujuFrame extends JFrame implements ActionListener {
 
     JButton saveButton;
@@ -41,10 +39,14 @@ public class BujuFrame extends JFrame implements ActionListener {
     DefaultListModel fileList;
     JList list;
     JButton applyButton;
+    JButton deleteButton;
+    Path lisPath = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
+    ListLoader listLoader = new ListLoader();
 
-    public BujuFrame() {
+    public BujuFrame() throws IOException {
 
-        fileList = new DefaultListModel<>();
+        
+        fileList = listLoader.loadList();
 
         list = new JList(fileList);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,14 +90,17 @@ public class BujuFrame extends JFrame implements ActionListener {
         applyButton.setActionCommand("Aplly");
         applyButton.addActionListener(this);
 
+        deleteButton = new JButton("Delete");
+        deleteButton.setActionCommand("Delete");
+        deleteButton.addActionListener(this);
+
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
         rightPanel.setPreferredSize(new Dimension(200,200));
         rightPanel.setBackground(Color.GRAY);
-        rightPanel.add(listScrollPane, BorderLayout.CENTER);
-        rightPanel.add(new JSeparator(SwingConstants.VERTICAL));
-        rightPanel.add(Box.createHorizontalStrut(5));
-        rightPanel.add(applyButton, BorderLayout.SOUTH);
+        rightPanel.add(listScrollPane);
+        rightPanel.add(applyButton);
+        rightPanel.add(deleteButton);
         this.add(rightPanel, BorderLayout.EAST);
 
         JPanel leftPanel = new JPanel();

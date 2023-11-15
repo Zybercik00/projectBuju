@@ -2,6 +2,7 @@ package com.github.zybercik00;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,9 @@ public class BujuFrame extends JFrame implements ActionListener {
     JButton applyButton;
     JButton deleteButton;
     Path lisPath = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
+    private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
     ListLoader listLoader = new ListLoader();
+    ListCreator listCreator = new ListCreator();
 
     public BujuFrame() throws IOException {
 
@@ -134,7 +137,38 @@ public class BujuFrame extends JFrame implements ActionListener {
             }
             editorPane.setText("");
             textField.setText("");
-            }  
+            }
+            try {
+
+            listCreator.launchCreator();
+            listLoader.loadList();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } 
+        if (event.getSource() == applyButton) {
+            System.out.println("applay button");
+            String selected = list.getSelectedValue().toString();
+            if (!selected.contains(".txt")) {
+                selected = new String(selected + ".txt");
+            }
+            System.out.println(selected);
+            String folderPath = "/Users/kamilchmiel/projectBuju/";
+            String filePath = new String(folderPath + selected);
+            try {
+                File file = new File(filePath);
+                if (!Desktop.isDesktopSupported()) {
+                    System.out.println("Desktop not suported");
+                }
+                Desktop desktop = Desktop.getDesktop();
+                if (file.exists()) {
+                    desktop.open(file);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+    
 }

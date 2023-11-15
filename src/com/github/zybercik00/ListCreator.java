@@ -17,7 +17,10 @@ public class ListCreator  extends SimpleFileVisitor<Path> {
     private static Path listDirectory = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
     List<String> namesList = new ArrayList<>();
 
-
+    public void launchCreator() throws IOException {
+        ListCreator listCreator = new ListCreator();
+        Files.walkFileTree(directory, listCreator);
+    }
     
      @Override
     public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {

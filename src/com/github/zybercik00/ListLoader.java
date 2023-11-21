@@ -10,7 +10,6 @@ import javax.swing.DefaultListModel;
 
 public class ListLoader {
     
-    
 
     public DefaultListModel loadList() throws IOException {
         DefaultListModel fileList = new DefaultListModel<>();

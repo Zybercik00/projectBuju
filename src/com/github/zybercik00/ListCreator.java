@@ -15,7 +15,7 @@ public class ListCreator  extends SimpleFileVisitor<Path> {
 
     private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
     private static Path listDirectory = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
-    List<String> namesList = new ArrayList<>();
+    private List<String> namesList = new ArrayList<>();
 
     public void launchCreator() throws IOException {
         ListCreator listCreator = new ListCreator();

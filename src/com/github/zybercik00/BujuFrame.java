@@ -51,11 +51,9 @@ public class BujuFrame extends JFrame implements ActionListener {
     private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
     ListLoader listLoader = new ListLoader();
     ListCreator listCreator = new ListCreator();
-    DbConnections connections = new DbConnections();
     
 
     public BujuFrame() throws IOException {
-
         
         fileList = listLoader.loadList();
 
@@ -126,31 +124,16 @@ public class BujuFrame extends JFrame implements ActionListener {
         this.add(scrollPane);
         this.add(topPanel, BorderLayout.NORTH);
         this.setVisible(true);
-
         
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        Connection con = null;
-        Statement statement = null;
         if (event.getSource() == saveButton) {
             String newFile = editorPane.getText();
             String textTopic = textField.getText();
-            try {
-            con = connections.createConnections();
-            statement = con.createStatement();
-            String sql = "insert into BUJUTABELE " + "values(1, " + "'" + textTopic + "'" + ", " + "'" + newFile + "'" + ")";
-            System.out.println(sql);
-            statement.executeUpdate(sql);
-            System.out.println(statement);
-            con.close();
-            statement.close();
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-            
-            path = Path.of(textTopic + ".txt");
+
+            path = Path.of("/Users/kamilchmiel/projectBuju/resource/bujutxtfiles/" + textTopic + ".txt");
             if (textField != null) {
                 try {
                 Files.writeString(path, newFile, StandardCharsets.UTF_8);
@@ -162,7 +145,6 @@ public class BujuFrame extends JFrame implements ActionListener {
             textField.setText("");
             }
             try {
-
             listCreator.launchCreator();
             listLoader.loadList();
 
@@ -175,7 +157,7 @@ public class BujuFrame extends JFrame implements ActionListener {
             if (!selected.contains(".txt")) {
                 selected = new String(selected + ".txt");
             }
-            String folderPath = "/Users/kamilchmiel/projectBuju/";
+            String folderPath = "/Users/kamilchmiel/projectBuju/resource/bujutxtfiles";
             String filePath = new String(folderPath + selected);
             try {
                 File file = new File(filePath);

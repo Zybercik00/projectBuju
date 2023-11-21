@@ -1,5 +1,10 @@
 package com.github.zybercik00;
 
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -12,6 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.DriverManager;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -45,6 +51,8 @@ public class BujuFrame extends JFrame implements ActionListener {
     private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
     ListLoader listLoader = new ListLoader();
     ListCreator listCreator = new ListCreator();
+    DbConnections connections = new DbConnections();
+    
 
     public BujuFrame() throws IOException {
 
@@ -124,9 +132,24 @@ public class BujuFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        Connection con = null;
+        Statement statement = null;
         if (event.getSource() == saveButton) {
             String newFile = editorPane.getText();
             String textTopic = textField.getText();
+            try {
+            con = connections.createConnections();
+            statement = con.createStatement();
+            String sql = "insert into BUJUTABELE " + "values(1, " + "'" + textTopic + "'" + ", " + "'" + newFile + "'" + ")";
+            System.out.println(sql);
+            statement.executeUpdate(sql);
+            System.out.println(statement);
+            con.close();
+            statement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            
             path = Path.of(textTopic + ".txt");
             if (textField != null) {
                 try {
@@ -148,12 +171,10 @@ public class BujuFrame extends JFrame implements ActionListener {
             }
         } 
         if (event.getSource() == applyButton) {
-            System.out.println("applay button");
             String selected = list.getSelectedValue().toString();
             if (!selected.contains(".txt")) {
                 selected = new String(selected + ".txt");
             }
-            System.out.println(selected);
             String folderPath = "/Users/kamilchmiel/projectBuju/";
             String filePath = new String(folderPath + selected);
             try {
@@ -168,6 +189,24 @@ public class BujuFrame extends JFrame implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (event.getSource() == deleteButton) {
+            String selected = list.getSelectedValue().toString();
+            int selectedIndex = list.getSelectedIndex();
+            if (!selected.contains(".txt")) {
+                selected = new String(selected + ".txt");
+            }
+            String folderPath = "/Users/kamilchmiel/projectBuju/";
+            String filePath = new String(folderPath + selected);
+            Path fileToDelete = Path.of(filePath);
+            list.remove(selectedIndex);
+            fileList.remove(selectedIndex);
+            try {
+                Files.delete(fileToDelete);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
         }
     }
     

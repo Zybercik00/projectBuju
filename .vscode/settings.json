@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "src/com/github/zybercik00/h2-2.2.224.jar"
+    ]
+}

@@ -3,5 +3,6 @@
         "lib/**/*.jar",
         "resource/h2-2.2.224.jar",
         "resource/library/h2-2.2.224.jar"
-    ]
+    ],
+    "java.dependency.packagePresentation": "flat"
 }

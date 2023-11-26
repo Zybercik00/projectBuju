@@ -3,10 +3,12 @@ package com.github.zybercik00;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class BujuApp {
     
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         ListCreator listCreator = new ListCreator();
         listCreator.launchCreator();
         ListLoader listLoader = new ListLoader();

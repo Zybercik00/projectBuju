@@ -37,25 +37,30 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 
-public class BujuFrame extends JFrame implements ActionListener {
+public class BujuFrame extends JFrame  {
 
-    JButton saveButton;
-    JEditorPane editorPane;
-    Path path;
-    JTextField textField;
-    DefaultListModel fileList;
-    JList list;
-    JButton applyButton;
-    JButton deleteButton;
-    Path lisPath = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
+    private JButton saveButton;
+    private JEditorPane editorPane;
+    private Path path;
+    private JTextField textField;
+    private DefaultListModel fileList;
+    private JList list;
+    private JButton applyButton;
+    private JButton deleteButton;
+    private Path lisPath = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
     private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
-    ListLoader listLoader = new ListLoader();
-    ListCreator listCreator = new ListCreator();
+    private ListLoader listLoader = new ListLoader();
+    
     
 
-    public BujuFrame() throws IOException {
-        
+    public BujuFrame() throws IOException  {
+
         fileList = listLoader.loadList();
+        
+
+        editorPane = new JEditorPane();
+        JScrollPane scrollPane = new JScrollPane(editorPane);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         list = new JList(fileList);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -71,8 +76,7 @@ public class BujuFrame extends JFrame implements ActionListener {
 
         textField = new JTextField(10);
         textField.setActionCommand("Topic of your texst: ");
-        textField.addActionListener(this);
-
+        
         JLabel textFieldLabel = new JLabel();
         textFieldLabel.setText("Topic: ");
 
@@ -85,31 +89,23 @@ public class BujuFrame extends JFrame implements ActionListener {
         topPanel.add(textField);
         
         
-
+        BujuController bujuController = new BujuController(editorPane, textField);
+        textField.addActionListener(bujuController);
         saveButton = new JButton("Save");
-        saveButton.addActionListener(this);
-
+        saveButton.setActionCommand("save");
+        saveButton.addActionListener(bujuController);
+        
         JPanel bottomPanel = new JPanel();
         bottomPanel.setPreferredSize(new Dimension(100,100));
         bottomPanel.setBackground(Color.GRAY);
         bottomPanel.add(saveButton,  BorderLayout.EAST);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        applyButton = new JButton("Apply");
-        applyButton.setActionCommand("Aplly");
-        applyButton.addActionListener(this);
-
-        deleteButton = new JButton("Delete");
-        deleteButton.setActionCommand("Delete");
-        deleteButton.addActionListener(this);
-
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
         rightPanel.setPreferredSize(new Dimension(200,200));
         rightPanel.setBackground(Color.GRAY);
         rightPanel.add(listScrollPane);
-        rightPanel.add(applyButton);
-        rightPanel.add(deleteButton);
         this.add(rightPanel, BorderLayout.EAST);
 
         JPanel leftPanel = new JPanel();
@@ -118,78 +114,32 @@ public class BujuFrame extends JFrame implements ActionListener {
         
         this.add(leftPanel, BorderLayout.WEST);
 
-        editorPane = new JEditorPane();
-        JScrollPane scrollPane = new JScrollPane(editorPane);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
         this.add(scrollPane);
         this.add(topPanel, BorderLayout.NORTH);
         this.setVisible(true);
         
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == saveButton) {
-            String newFile = editorPane.getText();
-            String textTopic = textField.getText();
+    public JButton getSaveButton() {
+        return saveButton;
+    }
 
-            path = Path.of("/Users/kamilchmiel/projectBuju/resource/bujutxtfiles/" + textTopic + ".txt");
-            if (textField != null) {
-                try {
-                Files.writeString(path, newFile, StandardCharsets.UTF_8);
-                fileList.addElement(textTopic);
-            } catch (IOException e) {
-                System.out.println(e.getStackTrace());
-            }
-            editorPane.setText("");
-            textField.setText("");
-            }
-            try {
-            listCreator.launchCreator();
-            listLoader.loadList();
+    public JButton getApplyButton() {
+        return applyButton;
+    }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } 
-        if (event.getSource() == applyButton) {
-            String selected = list.getSelectedValue().toString();
-            if (!selected.contains(".txt")) {
-                selected = new String(selected + ".txt");
-            }
-            String folderPath = "/Users/kamilchmiel/projectBuju/resource/bujutxtfiles";
-            String filePath = new String(folderPath + selected);
-            try {
-                File file = new File(filePath);
-                if (!Desktop.isDesktopSupported()) {
-                    System.out.println("Desktop not suported");
-                }
-                Desktop desktop = Desktop.getDesktop();
-                if (file.exists()) {
-                    desktop.open(file);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (event.getSource() == deleteButton) {
-            String selected = list.getSelectedValue().toString();
-            int selectedIndex = list.getSelectedIndex();
-            if (!selected.contains(".txt")) {
-                selected = new String(selected + ".txt");
-            }
-            String folderPath = "/Users/kamilchmiel/projectBuju/";
-            String filePath = new String(folderPath + selected);
-            Path fileToDelete = Path.of(filePath);
-            list.remove(selectedIndex);
-            fileList.remove(selectedIndex);
-            try {
-                Files.delete(fileToDelete);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            
-        }
+    public JEditorPane getEditorPane() {
+        return editorPane;
+    }
+    public JTextField getTextField() {
+        return textField;
+    }
+    public DefaultListModel getFileList() {
+        return fileList;
+    }
+    public JButton getDeleteButton() {
+        return deleteButton;
     }
     
 }

@@ -1,19 +1,15 @@
 package com.github.zybercik00;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import java.sql.SQLException;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JEditorPane;
-import javax.swing.JList;
 import javax.swing.JTextField;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

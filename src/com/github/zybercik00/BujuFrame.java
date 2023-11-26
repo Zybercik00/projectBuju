@@ -1,26 +1,12 @@
 package com.github.zybercik00;
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.DriverManager;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -30,25 +16,19 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionListener;
+
 
 public class BujuFrame extends JFrame  {
 
     private JButton saveButton;
     private JEditorPane editorPane;
-    private Path path;
     private JTextField textField;
     private DefaultListModel fileList;
     private JList list;
     private JButton applyButton;
     private JButton deleteButton;
-    private Path lisPath = Path.of("/Users/kamilchmiel/projectBuju/listOfTopics.txt");
-    private static Path directory = Path.of("/Users/kamilchmiel/projectBuju");
     private ListLoader listLoader = new ListLoader();
     
     
@@ -65,7 +45,6 @@ public class BujuFrame extends JFrame  {
         list = new JList(fileList);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
-        // list.addListSelectionListener(this);
         list.setVisibleRowCount(20);
         JScrollPane listScrollPane = new JScrollPane(list);
         listScrollPane.setBackground(Color.GREEN);
@@ -113,8 +92,6 @@ public class BujuFrame extends JFrame  {
         leftPanel.setBackground(Color.GRAY);
         
         this.add(leftPanel, BorderLayout.WEST);
-
-        
         this.add(scrollPane);
         this.add(topPanel, BorderLayout.NORTH);
         this.setVisible(true);
